@@ -16,11 +16,13 @@ grad_sym=gradient(f_sym);
 f=matlabFunction(f_sym,'Vars',{[x;y]});
 grad_f=matlabFunction(grad_sym,'Vars',{[x;y]});
 
-%Graph the function to get an intuition of its image
-grapher(f,40,40,100, 'surf');
-
 % Maximum iterations limit for following methods
 max_iter = 100;
+
+%% Graph the function to get an intuition of its image
+grapher(f,40,40,100, 'surf');
+
+
 
 %% Task 1: Run steepest descent for different step sizes, random starting point
 
@@ -45,14 +47,17 @@ for i=1:length(step_sizes)
     plot(1:length(f_evals), f_evals,'-x', 'LineWidth', 1,'MarkerSize',5,'Color','r', 'DisplayName','Function values at each iteration');
     plot(length(f_evals), f_evals(end), 'Marker', 'diamond', 'LineWidth', 1.5, 'MarkerSize', 5, 'Color', 'b',  'DisplayName', 'Function value at point of termination');
     xlabel('Iteration');
-    ylabel('Function Value');
+    ylabel('Function Value - Logarithmic Scale');
+    if(step > 1/3)
+        yscale('log');
+    end;
     title('Function Values at Each Iteration - Steepest Descent');
     subtitle("Step size: " + step + newline + 'Starting point: (' + x0(1) + ', ' + x0(2) + ')');
     legend show; 
     grid on;
 
     % Now do the contour plots
-    grapher(f,20,20,100,'contour');
+    grapher(f,10,10,100,'contour');
     hold on;
     legend show;
     title('Trajectory of optimization point to termination during Steepest Descent');
@@ -73,13 +78,13 @@ for i=1:length(step_sizes)
     plot3(history_x(end),history_y(end),history_z(end), 'Marker', 'diamond', 'MarkerSize', 10, 'LineWidth', 2, 'Color','b','DisplayName','Point of termination');
 end
 
-%% Now consider the constraints -10 <= x <= 5 and -8 <= y <=12
+%% This section should be run prior to Tasks 2-4
+% Now consider the constraints -10 <= x <= 5 and -8 <= y <=12
 x_constraints = [-10, 5];
 y_constraints = [-8, 12];
 
 % We will use the Steepest Descent with Projection method
 tolerance = 1e-2;
-
 
 %% Task 2: Initial point (5,-5) s=5, g=0.5
 x0 = [5;-5];
@@ -193,6 +198,7 @@ plot3(history_x(end),history_y(end),history_z(end), 'Marker', 'diamond', 'Marker
 x0 = [8;-10];
 step=0.1;
 gamma=0.2;
+max_iter=300;
 
 [xmin, history] = steepest_descent_proj(grad_f, x0, max_iter, tolerance, step, gamma, x_constraints, y_constraints);
 

@@ -18,7 +18,7 @@ function [xmin, history] = steepest_descent(grad_f, x0, max_iter, tolerance, ste
     history = x0';         % Store points for plotting
     
     % Start iteration
-    for iter = 1:max_iter
+    for iter = 1:max_iter-1
         grad = grad_f(xmin);       % Compute the gradient
         grad_norm = norm(grad); % Norm of the gradient
         

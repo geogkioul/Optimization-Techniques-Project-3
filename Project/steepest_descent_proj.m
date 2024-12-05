@@ -20,12 +20,12 @@ function [xmin, history] = steepest_descent_proj(grad_f, x0, max_iter, tolerance
     history = x0';
 
     % Start iteration
-    for iter = 1:max_iter
+    for iter = 1:max_iter-1
         grad = grad_f(xmin); % Compute the gradient
         xobj = xmin - step * grad; % The vector that will be projected to the set
         xproj = projection(xobj, x_constraints, y_constraints); % Compute the projection
-        % Break condition xproj = xobj
-        if(xobj == xproj)
+        % Τermination condition |xproj - xmin| < tolerance
+        if(norm(xmin - xproj) < tolerance)
             break;
         end
         xmin = xmin + gamma*(xproj-xmin); % Compute the next xk vector
